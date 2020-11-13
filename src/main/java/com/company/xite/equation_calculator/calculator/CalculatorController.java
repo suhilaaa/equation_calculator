@@ -17,6 +17,6 @@ public class CalculatorController {
     @RequestMapping(method = RequestMethod.POST, value ="/calculate/{userId}")
     public Result calculate(@PathVariable long userId, @RequestBody String equation){
         Equation formattedEquation = equationService.getEquation("5+6");
-        return calculatorService.performEquation(formattedEquation);
+        return calculatorService.performEquation(formattedEquation, userId);
     }
 }

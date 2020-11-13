@@ -4,13 +4,16 @@ import com.company.xite.equation_calculator.Result;
 import com.company.xite.equation_calculator.classifier.NumberClassificationService;
 import com.company.xite.equation_calculator.classifier.NumberClassifier;
 import com.company.xite.equation_calculator.equation.Equation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CalculatorService {
+    @Autowired
     private Result result;
 
-    public Result performEquation(Equation equation) {
+    public Result performEquation(Equation equation, long userId) {
+        Result result = new Result();
         switch (equation.getOperator()) {
             case "+":
                 result.setResultNumber(equation.getFirstOperand() + equation.getSecondOperand());
@@ -34,6 +37,13 @@ public class CalculatorService {
                         NumberClassificationService.isWholeNumber(result.getResultNumber()))
         );
         result.setEquation(equation);
+        if(this.result.getHistory().size() < 5) {
+            this.result.getHistory().add(result);
+        }
+        if(this.result.getHistory().size() ==5){
+            this.result.getHistory().remove(0);
+            this.result.getHistory().add(result);
+        }
         return result;
     }
 }

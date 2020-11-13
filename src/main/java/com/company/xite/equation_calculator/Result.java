@@ -3,22 +3,29 @@ package com.company.xite.equation_calculator;
 
 import com.company.xite.equation_calculator.classifier.NumberClassifier;
 import com.company.xite.equation_calculator.equation.Equation;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Objects;
 
+@Component
 public class Result {
 
+    private long userId;
     private Equation equation;
     private double resultNumber;
     private NumberClassifier numberClassifier;
     private List<Result> history;
 
-    public Result(Equation equation, double resultNumber, NumberClassifier numberClassifier, List<Result> history) {
+    public Result(long userId, Equation equation, double resultNumber, NumberClassifier numberClassifier, List<Result> history) {
+        this.userId = userId;
         this.equation = equation;
         this.resultNumber = resultNumber;
         this.numberClassifier = numberClassifier;
         this.history = history;
+    }
+
+    public Result() {
     }
 
     public Equation getEquation() {
@@ -53,12 +60,21 @@ public class Result {
         this.history = history;
     }
 
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        com.company.xite.equation_calculator.Result result = (com.company.xite.equation_calculator.Result) o;
+        Result result = (Result) o;
         return Double.compare(result.resultNumber, resultNumber) == 0 &&
+                Objects.equals(userId, result.userId) &&
                 Objects.equals(equation, result.equation) &&
                 Objects.equals(numberClassifier, result.numberClassifier) &&
                 Objects.equals(history, result.history);
@@ -66,13 +82,14 @@ public class Result {
 
     @Override
     public int hashCode() {
-        return Objects.hash(equation, resultNumber, numberClassifier, history);
+        return Objects.hash(userId, equation, resultNumber, numberClassifier, history);
     }
 
     @Override
     public String toString() {
         return "Result{" +
-                "equation=" + equation +
+                "userId='" + userId + '\'' +
+                ", equation=" + equation +
                 ", resultNumber=" + resultNumber +
                 ", numberClassifier=" + numberClassifier +
                 ", history=" + history +
