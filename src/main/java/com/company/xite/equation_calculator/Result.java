@@ -12,28 +12,16 @@ import java.util.Objects;
 public class Result {
 
     private long userId;
-    private Equation equation;
     private double resultNumber;
     private NumberClassifier numberClassifier;
-    private List<Result> history;
 
-    public Result(long userId, Equation equation, double resultNumber, NumberClassifier numberClassifier, List<Result> history) {
+    public Result(long userId, double resultNumber, NumberClassifier numberClassifier) {
         this.userId = userId;
-        this.equation = equation;
         this.resultNumber = resultNumber;
         this.numberClassifier = numberClassifier;
-        this.history = history;
     }
 
     public Result() {
-    }
-
-    public Equation getEquation() {
-        return equation;
-    }
-
-    public void setEquation(Equation equation) {
-        this.equation = equation;
     }
 
     public double getResultNumber() {
@@ -52,14 +40,6 @@ public class Result {
         this.numberClassifier = numberClassifier;
     }
 
-    public List<Result> getHistory() {
-        return history;
-    }
-
-    public void setHistory(List<Result> history) {
-        this.history = history;
-    }
-
     public long getUserId() {
         return userId;
     }
@@ -75,24 +55,20 @@ public class Result {
         Result result = (Result) o;
         return Double.compare(result.resultNumber, resultNumber) == 0 &&
                 Objects.equals(userId, result.userId) &&
-                Objects.equals(equation, result.equation) &&
-                Objects.equals(numberClassifier, result.numberClassifier) &&
-                Objects.equals(history, result.history);
+                Objects.equals(numberClassifier, result.numberClassifier);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, equation, resultNumber, numberClassifier, history);
+        return Objects.hash(userId, resultNumber, numberClassifier);
     }
 
     @Override
     public String toString() {
         return "Result{" +
                 "userId='" + userId + '\'' +
-                ", equation=" + equation +
                 ", resultNumber=" + resultNumber +
                 ", numberClassifier=" + numberClassifier +
-                ", history=" + history +
                 '}';
     }
 }

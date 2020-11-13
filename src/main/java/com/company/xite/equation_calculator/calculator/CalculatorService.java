@@ -9,11 +9,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CalculatorService {
-    @Autowired
-    private Result result;
 
     public Result performEquation(Equation equation, long userId) {
         Result result = new Result();
+        result.setUserId(userId);
         switch (equation.getOperator()) {
             case "+":
                 result.setResultNumber(equation.getFirstOperand() + equation.getSecondOperand());
@@ -36,14 +35,14 @@ public class CalculatorService {
                         NumberClassificationService.isPrimeNumber(result.getResultNumber()),
                         NumberClassificationService.isWholeNumber(result.getResultNumber()))
         );
-        result.setEquation(equation);
-        if(this.result.getHistory().size() < 5) {
-            this.result.getHistory().add(result);
-        }
-        if(this.result.getHistory().size() ==5){
-            this.result.getHistory().remove(0);
-            this.result.getHistory().add(result);
-        }
+
+//        if(result.getHistory().size() < 5) {
+//            this.result.getHistory().add(result);
+//        }
+//        if(this.result.getHistory().size() ==5){
+//            this.result.getHistory().remove(0);
+//            this.result.getHistory().add(result);
+//        }
         return result;
     }
 }
