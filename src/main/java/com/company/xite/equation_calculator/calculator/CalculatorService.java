@@ -2,15 +2,17 @@ package com.company.xite.equation_calculator.calculator;
 
 import com.company.xite.equation_calculator.equation.EquationResponse;
 import com.company.xite.equation_calculator.equation.EquationResult;
-import com.company.xite.equation_calculator.classifier.NumberClassificationService;
+import com.company.xite.equation_calculator.classifier.NumberClassificationUtil;
 import com.company.xite.equation_calculator.classifier.NumberClassifier;
 import com.company.xite.equation_calculator.equation.Equation;
 import com.company.xite.equation_calculator.user.UserEquation;
 import com.company.xite.equation_calculator.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CalculatorService {
+    @Autowired
     private UserService userService;
 
     public CalculatorService(UserService userService) {
@@ -21,21 +23,14 @@ public class CalculatorService {
         EquationResult equationResult = new EquationResult();
         equationResult.setResultNumber(getEquationResult(equation));
         equationResult.setNumberClassifier(
-                new NumberClassifier(NumberClassificationService.isNaturalNumber(equationResult.getResultNumber()),
-                        NumberClassificationService.isPositiveNumber(equationResult.getResultNumber()),
-                        NumberClassificationService.isNegativeNumber(equationResult.getResultNumber()),
-                        NumberClassificationService.isPrimeNumber(equationResult.getResultNumber()),
-                        NumberClassificationService.isWholeNumber(equationResult.getResultNumber()))
+                new NumberClassifier(NumberClassificationUtil.isNaturalNumber(equationResult.getResultNumber()),
+                        NumberClassificationUtil.isPositiveNumber(equationResult.getResultNumber()),
+                        NumberClassificationUtil.isNegativeNumber(equationResult.getResultNumber()),
+                        NumberClassificationUtil.isPrimeNumber(equationResult.getResultNumber()),
+                        NumberClassificationUtil.isWholeNumber(equationResult.getResultNumber()))
         );
         userService.addEquation(userId, new UserEquation(equation, equationResult));
 
-//        if(result.getHistory().size() < 5) {
-//            this.result.getHistory().add(result);
-//        }
-//        if(this.result.getHistory().size() ==5){
-//            this.result.getHistory().remove(0);
-//            this.result.getHistory().add(result);
-//        }
         return new EquationResponse(equationResult,userService.getLatestUserEquations(userId));
     }
 

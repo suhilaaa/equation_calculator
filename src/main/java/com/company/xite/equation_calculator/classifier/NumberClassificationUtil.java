@@ -1,13 +1,10 @@
 package com.company.xite.equation_calculator.classifier;
 
-import org.springframework.stereotype.Service;
-
-@Service
-public class NumberClassificationService {
+public class NumberClassificationUtil {
 
     public static boolean isNaturalNumber(double number) {
 
-        return isPositiveNumber(number)&&(number == (int) number);
+        return isPositiveNumber(number) && (number == (int) number);
     }
 
     public static boolean isNegativeNumber(double number) {
@@ -22,8 +19,7 @@ public class NumberClassificationService {
         boolean isItPrime = true;
         if (number <= 1) {
             isItPrime = false;
-        }
-        else {
+        } else {
             for (int i = 2; i <= number / 2; i++) {
                 if ((number % i) == 0) {
                     isItPrime = false;
@@ -34,10 +30,9 @@ public class NumberClassificationService {
         return isItPrime;
     }
 
-
     public static boolean isWholeNumber(double number) {
         boolean isWhole;
-        if( number % 1 == 0) {
+        if (number % 1 == 0) {
             isWhole = true;
         } else {
             isWhole = false;
