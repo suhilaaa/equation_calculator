@@ -1,28 +1,18 @@
-package com.company.xite.equation_calculator;
+package com.company.xite.equation_calculator.equation;
 
 
 import com.company.xite.equation_calculator.classifier.NumberClassifier;
-import com.company.xite.equation_calculator.equation.Equation;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Objects;
 
 @Component
-public class Result {
+public class EquationResult {
 
-    private long userId;
+
     private double resultNumber;
     private NumberClassifier numberClassifier;
 
-    public Result(long userId, double resultNumber, NumberClassifier numberClassifier) {
-        this.userId = userId;
-        this.resultNumber = resultNumber;
-        this.numberClassifier = numberClassifier;
-    }
-
-    public Result() {
-    }
 
     public double getResultNumber() {
         return resultNumber;
@@ -40,35 +30,29 @@ public class Result {
         this.numberClassifier = numberClassifier;
     }
 
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Result result = (Result) o;
-        return Double.compare(result.resultNumber, resultNumber) == 0 &&
-                Objects.equals(userId, result.userId) &&
-                Objects.equals(numberClassifier, result.numberClassifier);
+        EquationResult equationResult = (EquationResult) o;
+        return
+                Double.compare(equationResult.resultNumber, resultNumber) == 0 &&
+                numberClassifier.equals(equationResult.numberClassifier) ;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, resultNumber, numberClassifier);
+        return Objects.hash( resultNumber, numberClassifier);
     }
 
     @Override
     public String toString() {
         return "Result{" +
-                "userId='" + userId + '\'' +
+             //   "userId=" + userId +
                 ", resultNumber=" + resultNumber +
                 ", numberClassifier=" + numberClassifier +
+
                 '}';
     }
 }

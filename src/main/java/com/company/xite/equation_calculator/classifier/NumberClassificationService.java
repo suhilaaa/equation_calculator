@@ -1,5 +1,8 @@
 package com.company.xite.equation_calculator.classifier;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class NumberClassificationService {
 
     public static boolean isNaturalNumber(double number) {

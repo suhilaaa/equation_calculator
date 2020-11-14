@@ -1,40 +1,33 @@
 package com.company.xite.equation_calculator.calculator;
 
-import com.company.xite.equation_calculator.Result;
+import com.company.xite.equation_calculator.equation.EquationResponse;
+import com.company.xite.equation_calculator.equation.EquationResult;
 import com.company.xite.equation_calculator.classifier.NumberClassificationService;
 import com.company.xite.equation_calculator.classifier.NumberClassifier;
 import com.company.xite.equation_calculator.equation.Equation;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.company.xite.equation_calculator.user.UserEquation;
+import com.company.xite.equation_calculator.user.UserService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CalculatorService {
+    private UserService userService;
 
-    public Result performEquation(Equation equation, long userId) {
-        Result result = new Result();
-        result.setUserId(userId);
-        switch (equation.getOperator()) {
-            case "+":
-                result.setResultNumber(equation.getFirstOperand() + equation.getSecondOperand());
-                break;
-            case "-":
-                result.setResultNumber(equation.getFirstOperand() - equation.getSecondOperand());
-                break;
-            case "*":
-            case "x":
-            case "X":
-                result.setResultNumber(equation.getFirstOperand() * equation.getSecondOperand());
-                break;
-            case "/":
-                result.setResultNumber(equation.getFirstOperand() / equation.getSecondOperand());
-        }
-        result.setNumberClassifier(
-                new NumberClassifier(NumberClassificationService.isNaturalNumber(result.getResultNumber()),
-                        NumberClassificationService.isPositiveNumber(result.getResultNumber()),
-                        NumberClassificationService.isNegativeNumber(result.getResultNumber()),
-                        NumberClassificationService.isPrimeNumber(result.getResultNumber()),
-                        NumberClassificationService.isWholeNumber(result.getResultNumber()))
+    public CalculatorService(UserService userService) {
+        this.userService = userService;
+    }
+
+    public EquationResponse performEquation(Equation equation, long userId) {
+        EquationResult equationResult = new EquationResult();
+        equationResult.setResultNumber(getEquationResult(equation));
+        equationResult.setNumberClassifier(
+                new NumberClassifier(NumberClassificationService.isNaturalNumber(equationResult.getResultNumber()),
+                        NumberClassificationService.isPositiveNumber(equationResult.getResultNumber()),
+                        NumberClassificationService.isNegativeNumber(equationResult.getResultNumber()),
+                        NumberClassificationService.isPrimeNumber(equationResult.getResultNumber()),
+                        NumberClassificationService.isWholeNumber(equationResult.getResultNumber()))
         );
+        userService.addEquation(userId, new UserEquation(equation, equationResult));
 
 //        if(result.getHistory().size() < 5) {
 //            this.result.getHistory().add(result);
@@ -43,6 +36,24 @@ public class CalculatorService {
 //            this.result.getHistory().remove(0);
 //            this.result.getHistory().add(result);
 //        }
-        return result;
+        return new EquationResponse(equationResult,userService.getLatestUserEquations(userId));
     }
+
+    private double getEquationResult(Equation equation) {
+        switch (equation.getOperator()) {
+            case "+":
+                return equation.getFirstOperand() + equation.getSecondOperand();
+            case "-":
+                return equation.getFirstOperand() - equation.getSecondOperand();
+            case "*":
+            case "x":
+            case "X":
+                return equation.getFirstOperand() * equation.getSecondOperand();
+            case "/":
+                return equation.getFirstOperand() / equation.getSecondOperand();
+        }
+        return 0;
+    }
+
+
 }

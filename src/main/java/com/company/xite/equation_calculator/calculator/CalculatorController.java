@@ -1,10 +1,13 @@
 package com.company.xite.equation_calculator.calculator;
 
-import com.company.xite.equation_calculator.Result;
 import com.company.xite.equation_calculator.equation.Equation;
 import com.company.xite.equation_calculator.equation.EquationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 public class CalculatorController {
@@ -15,8 +18,13 @@ public class CalculatorController {
     private CalculatorService calculatorService;
 
     @RequestMapping(method = RequestMethod.POST, value ="/calculate/{userId}")
-    public Result calculate(@PathVariable long userId, @RequestBody String equation){
-        Equation formattedEquation = equationService.getEquation("5+6");
-        return calculatorService.performEquation(formattedEquation, userId);
+    public ResponseEntity<Object> calculate(@PathVariable long userId, @RequestBody Map<String, Object> equation){
+        try {
+            Equation formattedEquation = equationService.getEquation((String) equation.get("equation"));
+            return ResponseEntity.ok(calculatorService.performEquation(formattedEquation, userId));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+
+        }
     }
 }
