@@ -34,7 +34,7 @@ public class CalculatorService {
         return new EquationResponse(equationResult,userService.getLatestUserEquations(userId));
     }
 
-    private double getEquationResult(Equation equation) {
+    public double getEquationResult(Equation equation) {
         switch (equation.getOperator()) {
             case "+":
                 return equation.getFirstOperand() + equation.getSecondOperand();
@@ -47,7 +47,7 @@ public class CalculatorService {
             case "/":
                 return equation.getFirstOperand() / equation.getSecondOperand();
         }
-        return 0;
+        throw new IllegalArgumentException();
     }
 
 
