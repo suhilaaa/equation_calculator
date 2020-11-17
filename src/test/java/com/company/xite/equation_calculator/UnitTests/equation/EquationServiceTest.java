@@ -1,5 +1,7 @@
-package com.company.xite.equation_calculator.equation;
+package com.company.xite.equation_calculator.UnitTests.equation;
 
+import com.company.xite.equation_calculator.equation.Equation;
+import com.company.xite.equation_calculator.equation.EquationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

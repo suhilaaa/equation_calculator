@@ -1,5 +1,9 @@
-package com.company.xite.equation_calculator.user;
+package com.company.xite.equation_calculator.UnitTests.user;
 
+import com.company.xite.equation_calculator.IntegrationTests.Utils.Helpers;
+import com.company.xite.equation_calculator.user.User;
+import com.company.xite.equation_calculator.user.UserEquation;
+import com.company.xite.equation_calculator.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +28,8 @@ class UserServiceTest {
     @BeforeEach
     public void setUp() {
         userService = new UserService();
-        userId = ThreadLocalRandom.current().nextLong(100);;
+        userId = Helpers.generateTestTicket();
+
 
     }
 

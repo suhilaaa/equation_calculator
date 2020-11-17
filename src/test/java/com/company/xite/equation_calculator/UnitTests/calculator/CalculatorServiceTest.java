@@ -1,5 +1,7 @@
-package com.company.xite.equation_calculator.calculator;
+package com.company.xite.equation_calculator.UnitTests.calculator;
 
+import com.company.xite.equation_calculator.IntegrationTests.Utils.Helpers;
+import com.company.xite.equation_calculator.calculator.CalculatorService;
 import com.company.xite.equation_calculator.equation.Equation;
 import com.company.xite.equation_calculator.equation.EquationResponse;
 import com.company.xite.equation_calculator.equation.EquationResult;
@@ -20,6 +22,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -40,8 +43,7 @@ public class CalculatorServiceTest {
         userService = new UserService();
         calculatorService = new CalculatorService(userService);
         equation = new Equation(1d, 2d, "+");
-        userId = ThreadLocalRandom.current().nextLong(100);
-
+        userId = Helpers.generateTestTicket();
     }
 
     @Test
@@ -175,5 +177,13 @@ public class CalculatorServiceTest {
         assertEquals(3d, equationResponse.getEquationResult().getResultNumber(), 0);
         assertEquals(1, userService.getAllUserEquations(userId).size());
         assertTrue(equationResponse.getEquationResult().getNumberClassifier().isWholeNumber());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testValidateEquationForDivisionWithZero(){
+        equation.setOperator("/");
+        equation.setSecondOperand(0);
+        EquationResult equationResult = new EquationResult();
+        equationResult.setResultNumber(calculatorService.getEquationResult(equation));
     }
 }

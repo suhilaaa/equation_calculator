@@ -45,9 +45,17 @@ public class CalculatorService {
             case "X":
                 return equation.getFirstOperand() * equation.getSecondOperand();
             case "/":
+                validateEquationForDivision(equation);
                 return equation.getFirstOperand() / equation.getSecondOperand();
         }
         throw new IllegalArgumentException();
+    }
+
+    public boolean validateEquationForDivision(Equation equation){
+        if(equation.getOperator().equals("/") && equation.getSecondOperand() == 0.0){
+                throw new IllegalArgumentException();
+        }
+        return true;
     }
 
 
