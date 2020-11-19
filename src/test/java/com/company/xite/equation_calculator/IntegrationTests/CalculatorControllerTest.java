@@ -108,6 +108,13 @@ public class CalculatorControllerTest {
     }
 
     @Test
+    public void userCanCalculateCorrectEquationFormatWithLeadingZeros() throws Exception {
+        String body = Helpers.buildRequestBody("0001+0002");
+        MvcResult mvcResult = Requests.httpRequest(mockMvc, url, body, userId, MediaType.APPLICATION_JSON, status().isOk());
+        Helpers.validatePathWithValue(mvcResult, "$.equationResult.resultNumber", 3d);
+    }
+
+    @Test
     public void userCanCalculateCorrectEquationFormatWithValidMultiplicationOperator() throws Exception {
         String body = Helpers.buildRequestBody("2*2");
         MvcResult mvcResult = Requests.httpRequest(mockMvc, url, body, userId, MediaType.APPLICATION_JSON, status().isOk());

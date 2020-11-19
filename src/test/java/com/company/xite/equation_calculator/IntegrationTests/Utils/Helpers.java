@@ -8,7 +8,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class Helpers {
 
